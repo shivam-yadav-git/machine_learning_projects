@@ -106,4 +106,18 @@ from sklearn.feature_extraction.text import CountVectorizer # new
 cv = CountVectorizer(max_features=5000, stop_words='english') # new
 vectors = cv.fit_transform(df['tags']).toarray() # new
 
+# calculating cosine distance between vectors
+from sklearn.metrics.pairwise import cosine_similarity # new
+similarity = cosine_similarity(vectors) # new
+
+# getting top 5 movies for recommendation
+def recommend(movie):
+    movie_index = df[df['title']== movie].index[0] # new
+    dists = similarity[movie_index]
+    top_5 = sorted(list(enumerate(dists)), reverse=True, key=lambda x:x[1])[1:6]
+    for i in top_5:
+        print(df.iloc[i[0]].title)
+    
+recommend('Batman Begins')
+
 
